@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Final Step</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+<div class="ad">Ad Slot 1</div>
+
+<p>Final step</p>
+<div class="timer" id="t">10</div>
+
+<div class="ad">Ad Slot 2</div>
+
+<button id="btn" disabled>Go to Link</button>
+
+<div class="ad">Ad Slot 3</div>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script>
+let s = 10;
+let code = new URLSearchParams(location.search).get("code");
+
+let i = setInterval(async () => {
+  s--;
+  t.innerText = s;
+  if (s === 0) {
+    clearInterval(i);
+    btn.disabled = false;
+    btn.onclick = async () => {
+      let ref = doc(db, "links", code);
+      let snap = await getDoc(ref);
+      if (!snap.exists()) return location.href="404.html";
+      await updateDoc(ref, { clicks: increment(1) });
+      location.href = snap.data().originalUrl;
+    };
+  }
+}, 1000);
+</script>
+</body>
+</html>
