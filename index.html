@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MiniLink - Shorten Links</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h2>MiniLink</h2>
+  <p>Shorten your link & earn</p>
+
+  <input id="url" placeholder="Paste your long URL">
+  <button onclick="shorten()">Shorten</button>
+
+  <div id="result"></div>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script>
+function randomCode() {
+  return Math.random().toString(36).substring(2, 8);
+}
+
+async function shorten() {
+  let url = document.getElementById("url").value;
+  if (!url) return alert("Enter a link");
+
+  let code = randomCode();
+  await setDoc(doc(db, "links", code), {
+    originalUrl: url,
+    clicks: 0,
+    createdAt: Date.now()
+  });
+
+  document.getElementById("result").innerHTML =
+    `Your link:<br><b>${location.origin}/${code}</b>`;
+}
+</script>
+</body>
+</html>
