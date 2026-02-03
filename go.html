@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Please Wait</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+<div class="ad">Ad Slot 1</div>
+
+<p>Please wait</p>
+<div class="timer" id="t">10</div>
+
+<div class="ad">Ad Slot 2</div>
+
+<button id="btn" disabled>Continue</button>
+
+<div class="ad">Ad Slot 3</div>
+
+</div>
+
+<script>
+let s = 10;
+let code = new URLSearchParams(location.search).get("code");
+let i = setInterval(() => {
+  s--;
+  t.innerText = s;
+  if (s === 0) {
+    clearInterval(i);
+    btn.disabled = false;
+    btn.onclick = () => location.href = "go2.html?code=" + code;
+  }
+}, 1000);
+</script>
+</body>
+</html>
